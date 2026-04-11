@@ -1,0 +1,280 @@
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
+
+const resources = {
+  en: {
+    translation: {
+      common: {
+        language: 'Language',
+        languages: {
+          en: 'English',
+          es: 'Spanish',
+          ru: 'Russian',
+        },
+        backToSignIn: 'Back to sign in',
+        retry: 'Retry',
+      },
+      auth: {
+        fields: {
+          email: 'Email',
+          password: 'Password',
+          firstName: 'First name',
+          lastName: 'Last name',
+          birthDate: 'Birth date',
+          phone: 'Phone',
+          accountEmail: 'Account email',
+        },
+        signIn: {
+          title: 'Sign in',
+          description: 'Enter your credentials to start the PKCE authorization flow.',
+          submit: 'Sign in',
+          submitting: 'Signing in...',
+          continueSession: 'Continue with existing session',
+          noAccount: "Don't have an account?",
+          signUp: 'Sign up',
+          resetPassword: 'Reset password',
+          registrationSuccess: 'Account created successfully. Please sign in.',
+          unexpectedError: 'Unexpected authentication error.',
+        },
+        signUp: {
+          title: 'Create account',
+          description: 'Register your account and then continue with PKCE sign-in.',
+          submit: 'Create account',
+          submitting: 'Creating account...',
+          haveAccount: 'Already have an account?',
+          signIn: 'Sign in',
+          invalidEmail: 'Please use a valid email address.',
+          failure: 'Could not sign up. Please try again.',
+          passwordHint: 'At least 8 characters',
+          optionalPhone: 'Optional',
+        },
+        resetPassword: {
+          title: 'Reset password',
+          description: 'Submit your account email and we will trigger a reset request.',
+          submit: 'Send reset link',
+          submitting: 'Submitting...',
+          rememberedPassword: 'Remembered your password?',
+          ifExists: 'If your account exists, reset instructions were sent.',
+          endpointUnavailable: 'Reset endpoint is not available yet, but the screen is wired and ready.',
+          failure: 'Could not request password reset.',
+        },
+      },
+      pkce: {
+        redirectingTitle: 'Redirecting to authorization',
+        preparing: 'Preparing PKCE challenge...',
+        failedTitle: 'PKCE start failed',
+        retry: 'Retry',
+      },
+      callback: {
+        signingInTitle: 'Signing you in',
+        validating: 'Validating authorization code and creating your session...',
+        failedTitle: 'Authentication failed',
+        retryFlow: 'Retry PKCE flow',
+      },
+      gallery: {
+        title: 'Gallery',
+        description: 'Protected page available only after successful PKCE authentication.',
+        galleryTab: 'Gallery',
+        blogTab: 'Blog',
+        blogPlaceholder: 'Blog feed will appear here.',
+        signOut: 'Sign out',
+        signingOut: 'Signing out...',
+        accessToken: 'Access token',
+        refreshToken: 'Refresh token',
+        tokenNotAvailable: 'n/a',
+        logoutFailed: 'Logout failed.',
+      },
+    },
+  },
+  es: {
+    translation: {
+      common: {
+        language: 'Idioma',
+        languages: {
+          en: 'Ingles',
+          es: 'Espanol',
+          ru: 'Ruso',
+        },
+        backToSignIn: 'Volver a iniciar sesion',
+        retry: 'Reintentar',
+      },
+      auth: {
+        fields: {
+          email: 'Correo',
+          password: 'Contrasena',
+          firstName: 'Nombre',
+          lastName: 'Apellido',
+          birthDate: 'Fecha de nacimiento',
+          phone: 'Telefono',
+          accountEmail: 'Correo de la cuenta',
+        },
+        signIn: {
+          title: 'Iniciar sesion',
+          description: 'Introduce tus credenciales para iniciar el flujo PKCE.',
+          submit: 'Entrar',
+          submitting: 'Iniciando sesion...',
+          continueSession: 'Continuar con sesion existente',
+          noAccount: 'No tienes cuenta?',
+          signUp: 'Registrate',
+          resetPassword: 'Restablecer contrasena',
+          registrationSuccess: 'Cuenta creada correctamente. Inicia sesion.',
+          unexpectedError: 'Error de autenticacion inesperado.',
+        },
+        signUp: {
+          title: 'Crear cuenta',
+          description: 'Registra tu cuenta y despues continua con PKCE.',
+          submit: 'Crear cuenta',
+          submitting: 'Creando cuenta...',
+          haveAccount: 'Ya tienes cuenta?',
+          signIn: 'Iniciar sesion',
+          invalidEmail: 'Usa un correo valido.',
+          failure: 'No se pudo registrar. Intentalo de nuevo.',
+          passwordHint: 'Al menos 8 caracteres',
+          optionalPhone: 'Opcional',
+        },
+        resetPassword: {
+          title: 'Restablecer contrasena',
+          description: 'Envia el correo de tu cuenta para solicitar el restablecimiento.',
+          submit: 'Enviar enlace',
+          submitting: 'Enviando...',
+          rememberedPassword: 'Recordaste tu contrasena?',
+          ifExists: 'Si la cuenta existe, enviamos instrucciones.',
+          endpointUnavailable: 'El endpoint de reset no esta disponible aun, pero la pantalla esta lista.',
+          failure: 'No se pudo solicitar el restablecimiento.',
+        },
+      },
+      pkce: {
+        redirectingTitle: 'Redirigiendo a autorizacion',
+        preparing: 'Preparando PKCE...',
+        failedTitle: 'Fallo al iniciar PKCE',
+        retry: 'Reintentar',
+      },
+      callback: {
+        signingInTitle: 'Iniciando tu sesion',
+        validating: 'Validando codigo de autorizacion y creando sesion...',
+        failedTitle: 'Autenticacion fallida',
+        retryFlow: 'Reintentar flujo PKCE',
+      },
+      gallery: {
+        title: 'Galeria',
+        description: 'Pagina protegida disponible solo tras autenticacion PKCE.',
+        galleryTab: 'Galeria',
+        blogTab: 'Blog',
+        blogPlaceholder: 'La lista del blog aparecera aqui.',
+        signOut: 'Cerrar sesion',
+        signingOut: 'Cerrando sesion...',
+        accessToken: 'Token de acceso',
+        refreshToken: 'Token de refresco',
+        tokenNotAvailable: 'n/d',
+        logoutFailed: 'Fallo al cerrar sesion.',
+      },
+    },
+  },
+  ru: {
+    translation: {
+      common: {
+        language: 'Yazyk',
+        languages: {
+          en: 'Angliyskiy',
+          es: 'Ispanskiy',
+          ru: 'Russkiy',
+        },
+        backToSignIn: 'Nazad ko vhodu',
+        retry: 'Povtorit',
+      },
+      auth: {
+        fields: {
+          email: 'Email',
+          password: 'Parol',
+          firstName: 'Imya',
+          lastName: 'Familiya',
+          birthDate: 'Data rozhdeniya',
+          phone: 'Telefon',
+          accountEmail: 'Email akkaunta',
+        },
+        signIn: {
+          title: 'Vhod',
+          description: 'Vvedite dannye chtoby nachat PKCE avtorizaciyu.',
+          submit: 'Voyti',
+          submitting: 'Vhod...',
+          continueSession: 'Prodolzhit s tekushchey sessiey',
+          noAccount: 'Net akkaunta?',
+          signUp: 'Registraciya',
+          resetPassword: 'Sbrosit parol',
+          registrationSuccess: 'Akkaund sozdan. Voydite v sistemu.',
+          unexpectedError: 'Neozhidannaya oshibka avtorizacii.',
+        },
+        signUp: {
+          title: 'Registraciya',
+          description: 'Sozdayte akkaunt, zatem prodolzhite PKCE vhod.',
+          submit: 'Sozdat akkaunt',
+          submitting: 'Sozdanie akkaunta...',
+          haveAccount: 'Uzhe est akkaunt?',
+          signIn: 'Vhod',
+          invalidEmail: 'Ukazhite korrektnyy email.',
+          failure: 'Ne udalos zaregistrirovatsya. Povtorite popytku.',
+          passwordHint: 'Minimum 8 simvolov',
+          optionalPhone: 'Neobyazatelno',
+        },
+        resetPassword: {
+          title: 'Sbros parolya',
+          description: 'Otpravte email akkaunta dlya zaprosa sbrosa.',
+          submit: 'Otpravit ssylku',
+          submitting: 'Otpravka...',
+          rememberedPassword: 'Vspomnili parol?',
+          ifExists: 'Esli akkaunt sushchestvuet, instrukciya otpravlena.',
+          endpointUnavailable: 'Endpoint sbrosa poka nedostupen, no ekran uzhe gotov.',
+          failure: 'Ne udalos zaprosit sbros parolya.',
+        },
+      },
+      pkce: {
+        redirectingTitle: 'Pereadresaciya na avtorizaciyu',
+        preparing: 'Podgotovka PKCE...',
+        failedTitle: 'Ne udalos zapustit PKCE',
+        retry: 'Povtorit',
+      },
+      callback: {
+        signingInTitle: 'Vypolnyaem vhod',
+        validating: 'Proveryaem kod i sozdaem sessiyu...',
+        failedTitle: 'Oshibka avtorizacii',
+        retryFlow: 'Povtorit PKCE',
+      },
+      gallery: {
+        title: 'Galereya',
+        description: 'Zashchishchennaya stranica dostupna posle uspeshnoy PKCE avtorizacii.',
+        galleryTab: 'Galereya',
+        blogTab: 'Blog',
+        blogPlaceholder: 'Lenta bloga poyavitsya zdes.',
+        signOut: 'Vyiti',
+        signingOut: 'Vyhod...',
+        accessToken: 'Access token',
+        refreshToken: 'Refresh token',
+        tokenNotAvailable: 'n/a',
+        logoutFailed: 'Ne udalos vyyti.',
+      },
+    },
+  },
+} as const;
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'es', 'ru'],
+    interpolation: {
+      escapeValue: false,
+    },
+    detection: {
+      order: ['querystring', 'localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'app_lang',
+    },
+  })
+  .catch((error) => {
+    console.error('Failed to initialize i18n', error);
+  });
+
+export default i18n;

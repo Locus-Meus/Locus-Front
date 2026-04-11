@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { App } from '@/app/App';
 import '@/app/styles/index.css';
+import './shared/i18n';
 
 // Register PWA service worker
 registerSW({ immediate: true });
