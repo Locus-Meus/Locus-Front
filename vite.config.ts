@@ -33,4 +33,17 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    // Port for your React app
+    port: 5175,
+    proxy: {
+      // Forwards /api/auth/sign-in to http://localhost:8888/auth/sign-in
+      '/api': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+      },
+    },
+  },
 });

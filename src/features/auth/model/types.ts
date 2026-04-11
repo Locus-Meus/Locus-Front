@@ -11,9 +11,23 @@ export interface CsrfToken {
   parameterName: string;
 }
 
+export interface SignUpPayload {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  phone?: string; // Optional field
+  language: string; // For i18n sync with Java
+}
+
 export interface SignInPayload {
   username: string;
   password: string;
+}
+
+export interface ResetPasswordPayload {
+  email: string;
 }
 
 export interface AuthTokenResponse {

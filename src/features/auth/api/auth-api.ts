@@ -4,6 +4,8 @@ import type {
   CsrfToken,
   SignInPayload,
   AuthTokenResponse,
+  SignUpPayload,
+  ResetPasswordPayload,
 } from '../model/types';
 
 class AuthApi extends BaseApiClient {
@@ -15,6 +17,27 @@ class AuthApi extends BaseApiClient {
     return this.get<CsrfToken>(AUTH_CONFIG.endpoints.csrf);
   }
 
+  public async signUp(payload: SignUpPayload, csrf: CsrfToken): Promise<void> {
+    return this.post(
+      AUTH_CONFIG.endpoints.signUp,
+      {
+        login: payload.email,
+        email: payload.email,
+        password: payload.password,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        birthDate: payload.birthDate,
+        phone: payload.phone ?? '',
+        language: payload.language,
+      },
+      {
+        headers: {
+          [csrf.headerName]: csrf.token,
+        },
+      },
+    );
+  }
+
   public async signIn(payload: SignInPayload, csrf: CsrfToken): Promise<void> {
     const params = new URLSearchParams();
     params.set('username', payload.username);
@@ -23,6 +46,17 @@ class AuthApi extends BaseApiClient {
 
     return this.post(AUTH_CONFIG.endpoints.signIn, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+  }
+
+  public async requestPasswordReset(
+    payload: ResetPasswordPayload,
+    csrf: CsrfToken,
+  ): Promise<void> {
+    return this.post(AUTH_CONFIG.endpoints.resetPassword, payload, {
+      headers: {
+        [csrf.headerName]: csrf.token,
+      },
     });
   }
 
