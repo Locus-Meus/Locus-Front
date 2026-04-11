@@ -49,6 +49,17 @@ class AuthApi extends BaseApiClient {
     });
   }
 
+  public async logout(csrf: CsrfToken): Promise<void> {
+    const params = new URLSearchParams();
+    params.set(csrf.parameterName, csrf.token);
+
+    return this.post(AUTH_CONFIG.endpoints.logout, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  }
+
   public async requestPasswordReset(
     payload: ResetPasswordPayload,
     csrf: CsrfToken,
