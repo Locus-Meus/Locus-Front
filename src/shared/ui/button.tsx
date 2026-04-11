@@ -1,4 +1,3 @@
-// src/shared/ui/button-variants.ts
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 
