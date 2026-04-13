@@ -37,6 +37,12 @@ export default defineConfig({
     // Port for your React app
     port: 5175,
     proxy: {
+      '/sign-up': 'http://localhost:8888',
+      '/csrf-token': 'http://localhost:8888',
+      '/oauth2': 'http://localhost:8888',   
+      '/v3': 'http://localhost:8888',
+      '/swagger-ui': 'http://localhost:8888',
+      '/actuator': 'http://localhost:8888',
       // Forwards /api/auth/sign-in to http://localhost:8888/auth/sign-in
       '/api': {
         target: 'http://localhost:8888',

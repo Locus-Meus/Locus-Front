@@ -8,25 +8,25 @@ const inferRedirectUri = (): string => {
 };
 
 export const AUTH_CONFIG = {
-  issuer: import.meta.env.VITE_AUTH_ISSUER || '',
+  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
   clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'client',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile email api.read',
   redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI || inferRedirectUri(),
 
   endpoints: {
     // Session & Security
-    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || '/auth/csrf-token',
-    signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || '/auth/sign-in',
+    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || '/csrf-token',
+    signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || '/sign-in',
 
     // OAuth2 / PKCE Flow
     authorize:
-      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || '/auth/oauth2/authorize',
-    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || '/auth/oauth2/token',
+      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || '/oauth2/authorize',
+    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || '/oauth2/token',
 
     // Management
-    logout: '/auth/logout',
-    signUp: '/auth/sign-up',
-    resetPassword: '/auth/reset-password',
+    logout: '/logout',
+    signUp: '/sign-up',
+    resetPassword: '/reset-password',
   },
 } as const;
 
