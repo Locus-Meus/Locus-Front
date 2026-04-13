@@ -81,6 +81,7 @@ class AuthApi extends BaseApiClient {
     params.set('code_verifier', verifier);
     params.set('redirect_uri', AUTH_CONFIG.redirectUri);
     params.set('client_id', AUTH_CONFIG.clientId);
+    params.set('client_secret', AUTH_CONFIG.clientSecret);
 
     return this.post<AuthTokenResponse>(AUTH_CONFIG.endpoints.token, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

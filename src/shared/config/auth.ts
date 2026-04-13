@@ -1,22 +1,14 @@
-/**
- * Best Practice: Dynamically infer the redirect URI based on the environment.
- * In a PWA, this ensures the callback works whether you are on localhost or production.
- */
-const inferRedirectUri = (): string => {
-  if (typeof window === 'undefined') return 'http://localhost:5173/callback';
-  return `${window.location.origin}/callback`;
-};
-
 export const AUTH_CONFIG = {
   issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
   clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'client',
+  clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile email api.read',
-  redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI || inferRedirectUri(),
+  redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI || 'http://localhost:8888/oauth2/callback',
 
   endpoints: {
     // Session & Security
     csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || '/csrf-token',
-    signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || '/sign-in',
+    signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || '/oauth2/authorize',
 
     // OAuth2 / PKCE Flow
     authorize:
