@@ -7,10 +7,15 @@ export const loginUser = async (username: string, password: string) => {
     // 1. Get CSRF from Java
     const csrf = await authApi.getCsrfToken();
 
-    // 2. Prepare PKCE context
+    // 2. Authenticate (Session login)
+    await authApi.signIn({ username, password }, csrf);
+
+    // 3. Prepare PKCE context
     const { challenge, state } = await pkceService.generateContext();
 
-    // 3. Construct the Java Auth Server URL
+    debugger;
+
+    // 4. Construct the Java Auth Server URL
     // We use URLSearchParams for clean, safe encoding
     const params = new URLSearchParams({
       response_type: 'code',
@@ -25,7 +30,7 @@ export const loginUser = async (username: string, password: string) => {
 
     const authUrl = `${AUTH_CONFIG.endpoints.authorize}?${params.toString()}`;
 
-    // 4. Redirect to initiate the Auth Code exchange
+    // 5. Redirect to initiate the Auth Code exchange
     window.location.href = authUrl;
   } catch (error) {
     console.error('Login Flow Error:', error);
