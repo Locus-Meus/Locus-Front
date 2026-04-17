@@ -3,7 +3,8 @@ export const AUTH_CONFIG = {
   clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile email api.read',
-  redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI || 'http://localhost:5175/callback',
+  redirectUri:
+    import.meta.env.VITE_AUTH_REDIRECT_URI || 'http://localhost:5175/callback',
 
   endpoints: {
     // Session & Security

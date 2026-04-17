@@ -4,7 +4,7 @@ import { useSessionStore } from '@/entities/session';
 export class BaseApiClient {
   protected axios: AxiosInstance;
 
-  constructor(baseURL: string = '/api') {
+  constructor(baseURL: string = '') {
     this.axios = axios.create({
       baseURL,
       headers: {

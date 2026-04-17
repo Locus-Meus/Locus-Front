@@ -1,15 +1,13 @@
-import { useMemo, useState } from 'react';
-import type { FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { loginUser } from '../model/login-user';
+import { authApi } from '../api/auth-api';
 
 import { Button, Input, Label } from '@/shared/ui';
+import { useQuery } from '@tanstack/react-query';
 
-/**
- * Utility for extraction error messages
- */
 function toErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -18,39 +16,59 @@ function toErrorMessage(error: unknown): string {
 export function SignInForm() {
   const { t } = useTranslation();
 
-  /* Form State */
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  /* Status State */
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { data: csrf, isLoading: csrfLoading } = useQuery({
+    queryKey: ['csrf'],
+    queryFn: () => authApi.getCsrfToken(),
+  });
+
   const canSubmit = useMemo(() => {
-    return email.length > 0 && password.length > 0 && !isPending;
-  }, [email, password, isPending]);
+    return (
+      email.length > 0 && password.length > 0 && !isPending && !csrfLoading
+    );
+  }, [email, password, isPending, csrfLoading]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     if (!canSubmit) return;
 
     setIsPending(true);
     setError(null);
 
     try {
-      await loginUser(email, password);
+      await loginUser();
     } catch (err) {
       setError(toErrorMessage(err) || t('auth.signIn.unexpectedError'));
       setIsPending(false);
     }
   };
+
   return (
-    <form className='space-y-4' onSubmit={handleSubmit}>
+    <form
+      className='space-y-4'
+      action={'/sign-in'}
+      method='POST'
+      onSubmit={handleSubmit}
+    >
+      {csrf && (
+        <input
+          id={csrf.parameterName}
+          type='hidden'
+          name={csrf.parameterName}
+          value={csrf.token}
+        />
+      )}
+
       <div className='space-y-2'>
         <Label htmlFor='email'>{t('auth.fields.email')}</Label>
         <Input
           id='email'
           type='email'
+          name='email'
           placeholder='you@example.com'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -64,6 +82,7 @@ export function SignInForm() {
         <Input
           id='password'
           type='password'
+          name='password'
           placeholder='••••••••'
           value={password}
           onChange={(e) => setPassword(e.target.value)}

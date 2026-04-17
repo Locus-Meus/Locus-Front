@@ -33,7 +33,7 @@ export function CallbackPage() {
       }
     };
 
-    void handleCallback();
+    handleCallback();
 
     return () => {
       isMounted = false;
