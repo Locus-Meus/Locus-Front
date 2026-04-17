@@ -20,6 +20,7 @@
     "i18next": "23.11.5",
     "i18next-browser-languagedetector": "7.2.1",
     "lucide-react": "0.475.0",
+    "pkce-challenge": "6.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "14.1.2",

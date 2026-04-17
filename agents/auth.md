@@ -11,7 +11,9 @@
 - Sign In button calls `navigateToLogin()` from:
   - `src/features/auth/model/navigate-to-login.ts`
 - `navigateToLogin()`:
-  - Generates PKCE context (`code_challenge`, `state`) via `pkceService`.
+  - Generates PKCE challenge/verifier via `pkce-challenge` library.
+  - Generates OAuth `state` in frontend.
+  - Stores PKCE verifier + state in session storage via `pkce-storage`.
   - Builds OAuth2 authorize URL and redirects browser.
 
 ## OAuth2 Authorize Query Shape
@@ -62,6 +64,13 @@ Removed files include local forms/pages:
 - `src/features/auth/ui/reset-password-form.tsx`
 - `src/pages/sign-up/*`
 - `src/pages/reset-password/*`
+
+## PKCE Implementation Details
+
+- PKCE generation is library-based (`pkce-challenge`) for Spring-compatible `S256`.
+- Storage helper:
+  - `src/features/auth/model/pkce-storage.ts`
+- Callback flow reads verifier/state from storage and clears it after token exchange.
 
 ## Open Questions (For Future Updates)
 

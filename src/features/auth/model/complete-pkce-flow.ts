@@ -1,6 +1,6 @@
 import { useSessionStore } from '@/entities/session';
 import { authApi } from '../api/auth-api';
-import { pkceService } from './pkce';
+import { clearStoredPkceContext, getStoredPkceContext } from './pkce-storage';
 
 /**
  * Validates the OAuth2 callback and exchanges the code for a token.
@@ -16,7 +16,7 @@ export async function completePkceFlow(search: string): Promise<void> {
   }
 
   // 2. Validate State (Anti-forgery)
-  const { verifier, state: expectedState } = pkceService.getStored();
+  const { verifier, state: expectedState } = getStoredPkceContext();
   const returnedState = searchParams.get('state');
 
   if (expectedState && returnedState !== expectedState) {
@@ -44,5 +44,5 @@ export async function completePkceFlow(search: string): Promise<void> {
   });
 
   // 6. Cleanup sensitive temporary data
-  pkceService.clear();
+  clearStoredPkceContext();
 }
