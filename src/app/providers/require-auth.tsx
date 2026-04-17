@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSessionStore } from '@/entities/session';
+import { storeRedirectUrl } from '@/features/auth';
 
 export const RequireAuth = () => {
   const isAuth = useSessionStore((state) => state.isAuth);
@@ -11,6 +12,9 @@ export const RequireAuth = () => {
   // to "unlock" the app.
 
   if (!isAuth) {
+    const redirectUrl = `${location.pathname}${location.search}${location.hash}`;
+    storeRedirectUrl(redirectUrl);
+
     return <Navigate to='/' state={{ from: location }} replace />;
   }
 

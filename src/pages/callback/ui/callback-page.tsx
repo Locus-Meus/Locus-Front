@@ -3,7 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Button, LanguageSwitcher } from '@/shared/ui';
-import { completePkceFlow } from '../../../features/auth';
+import {
+  clearStoredRedirectUrl,
+  completePkceFlow,
+  getStoredRedirectUrl,
+} from '../../../features/auth';
 
 function toErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
@@ -24,7 +28,12 @@ export function CallbackPage() {
         await completePkceFlow(window.location.search);
 
         if (isMounted) {
-          navigate('/gallery', { replace: true });
+          const redirectUrl = getStoredRedirectUrl();
+          const safeRedirectUrl =
+            redirectUrl && redirectUrl.startsWith('/') ? redirectUrl : '/gallery';
+
+          clearStoredRedirectUrl();
+          navigate(safeRedirectUrl, { replace: true });
         }
       } catch (err) {
         if (isMounted) {
