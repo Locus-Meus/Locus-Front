@@ -47,7 +47,7 @@ export function GalleryPage() {
     } finally {
       // 3. Clear local state and redirect
       clearSession();
-      navigate('/sign-in', { replace: true });
+      navigate('/', { replace: true });
       setIsPending(false);
     }
   };

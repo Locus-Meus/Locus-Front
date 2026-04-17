@@ -1,2 +1,2 @@
-export * from './login-user';
+export * from './navigate-to-login';
 export * from './types';

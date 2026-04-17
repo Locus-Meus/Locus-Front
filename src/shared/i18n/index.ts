@@ -16,6 +16,10 @@ const resources = {
         retry: 'Retry',
       },
       auth: {
+        welcome: {
+          title: 'Welcome',
+          description: 'Continue in Java authentication flow.',
+        },
         fields: {
           email: 'Email',
           password: 'Password',
@@ -106,6 +110,10 @@ const resources = {
         retry: 'Reintentar',
       },
       auth: {
+        welcome: {
+          title: 'Bienvenido',
+          description: 'Continua en el flujo de autenticacion de Java.',
+        },
         fields: {
           email: 'Correo',
           password: 'Contrasena',
@@ -193,6 +201,10 @@ const resources = {
         retry: 'Повторить',
       },
       auth: {
+        welcome: {
+          title: 'Добро пожаловать',
+          description: 'Продолжите во внешнем Java-потоке авторизации.',
+        },
         fields: {
           email: 'Email',
           password: 'Пароль',

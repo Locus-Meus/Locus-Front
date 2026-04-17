@@ -1,19 +1,26 @@
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/ui';
-import { SignInForm } from '@/features/auth';
+import { navigateToLogin } from '@/features/auth';
 import { LanguageSwitcher } from '@/shared/ui/language-switcher';
+import { AUTH_CONFIG, resolveEndpoint } from '@/shared/config/auth';
 
 export function SignInPage() {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
-  const registrationSucceeded = searchParams.get('registered') === '1';
+
+  const handleSignIn = async () => {
+    await navigateToLogin();
+  };
+
+  const handleSignUp = () => {
+    window.location.href = resolveEndpoint(AUTH_CONFIG.endpoints.signUp);
+  };
 
   return (
     <main className='mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-4 py-8'>
@@ -24,17 +31,22 @@ export function SignInPage() {
       <Card className='w-full max-w-md self-center bg-card/95 shadow-lg'>
         <CardHeader className='space-y-1'>
           <CardTitle className='text-2xl font-bold tracking-tight'>
-            {t('auth.signIn.title')}
+            {t('auth.welcome.title')}
           </CardTitle>
-          <CardDescription>{t('auth.signIn.description')}</CardDescription>
+          <CardDescription>{t('auth.welcome.description')}</CardDescription>
         </CardHeader>
-        <CardContent>
-          {registrationSucceeded && (
-            <div className='mb-4 rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary animate-in fade-in'>
-              {t('auth.signIn.registrationSuccess')}
-            </div>
-          )}
-          <SignInForm />
+        <CardContent className='space-y-3'>
+          <Button className='w-full' type='button' onClick={handleSignIn}>
+            {t('auth.signIn.submit')}
+          </Button>
+          <Button
+            className='w-full'
+            type='button'
+            variant='outline'
+            onClick={handleSignUp}
+          >
+            {t('auth.signUp.submit')}
+          </Button>
         </CardContent>
       </Card>
     </main>

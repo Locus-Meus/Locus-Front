@@ -11,7 +11,7 @@ export const RequireAuth = () => {
   // to "unlock" the app.
 
   if (!isAuth) {
-    return <Navigate to='/sign-in' state={{ from: location }} replace />;
+    return <Navigate to='/' state={{ from: location }} replace />;
   }
 
   return <Outlet />;

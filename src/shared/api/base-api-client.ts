@@ -32,7 +32,7 @@ export class BaseApiClient {
       (error) => {
         if (error.response?.status === 401) {
           useSessionStore.getState().logout();
-          window.location.href = '/sign-in';
+          window.location.href = '/';
         }
         return Promise.reject(error);
       },

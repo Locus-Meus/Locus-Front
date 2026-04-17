@@ -1,8 +1,8 @@
 export const AUTH_CONFIG = {
-  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:5175',
-  clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'client',
+  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
+  clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'react-client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
-  scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile email api.read',
+  scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile read',
   redirectUri:
     import.meta.env.VITE_AUTH_REDIRECT_URI || 'http://localhost:5175/callback',
 
@@ -13,12 +13,13 @@ export const AUTH_CONFIG = {
 
     // OAuth2 / PKCE Flow
     authorize:
-      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'api/oauth2/authorize',
+      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT ||
+      'http://localhost:8888/oauth2/authorize',
     token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
 
     // Management
     logout: 'api/logout',
-    signUp: 'api/sign-up',
+    signUp: import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT || '/sign-up',
     resetPassword: 'api/reset-password',
   },
 } as const;
