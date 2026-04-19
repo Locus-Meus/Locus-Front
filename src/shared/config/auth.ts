@@ -1,6 +1,6 @@
 export const AUTH_CONFIG = {
   issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
-  clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'react-client',
+  clientId: 'react-client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile read',
   redirectUri:
@@ -15,11 +15,15 @@ export const AUTH_CONFIG = {
     authorize:
       import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT ||
       'http://localhost:8888/oauth2/authorize',
-    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
+    token:
+      import.meta.env.VITE_AUTH_TOKEN_ENDPOINT ||
+      'http://localhost:8888/oauth2/token',
 
     // Management
     logout: 'api/logout',
-    signUp: import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT || '/sign-up',
+    signUp:
+      import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT ||
+      'http://localhost:8888/sign-up',
     resetPassword: 'api/reset-password',
   },
 } as const;
