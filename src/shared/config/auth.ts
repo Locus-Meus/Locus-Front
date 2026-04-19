@@ -21,7 +21,9 @@ export const AUTH_CONFIG = {
 
     // Management
     logout: 'api/logout',
-    signUp: import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT || '/sign-up',
+    signUp:
+      import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT ||
+      'http://localhost:8888/sign-up',
     resetPassword: 'api/reset-password',
   },
 } as const;
