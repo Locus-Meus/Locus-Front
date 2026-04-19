@@ -1,6 +1,6 @@
 export const AUTH_CONFIG = {
   issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
-  clientId: import.meta.env.VITE_AUTH_CLIENT_ID || 'react-client',
+  clientId: 'react-client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile read',
   redirectUri:
