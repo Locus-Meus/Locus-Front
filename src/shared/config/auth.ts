@@ -15,7 +15,9 @@ export const AUTH_CONFIG = {
     authorize:
       import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT ||
       'http://localhost:8888/oauth2/authorize',
-    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
+    token:
+      import.meta.env.VITE_AUTH_TOKEN_ENDPOINT ||
+      'http://localhost:8888/oauth2/token',
 
     // Management
     logout: 'api/logout',
