@@ -4,26 +4,32 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 42 38% 96%;
+    --foreground: 161 35% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 161 35% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 161 35% 14%;
+    --primary: 17 83% 55%;
+    --primary-foreground: 36 100% 98%;
+    --secondary: 147 31% 90%;
+    --secondary-foreground: 161 35% 18%;
+    --muted: 40 40% 91%;
+    --muted-foreground: 162 14% 37%;
+    --accent: 43 94% 84%;
+    --accent-foreground: 161 35% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --border: 32 30% 82%;
+    --input: 32 30% 82%;
+    --ring: 17 83% 55%;
+    --radius: 1rem;
+    --spark-shell: 255 252 247;
+    --spark-shadow: 94 59 28;
+    --spark-wave: 235 156 86;
+    --spark-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+      Georgia, serif;
+    --spark-body: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
   }
 
   .dark {
@@ -53,7 +59,71 @@
   * {
     @apply border-border;
   }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--spark-body);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(
+        circle at top left,
+        rgba(var(--spark-wave), 0.24),
+        transparent 26%
+      ),
+      radial-gradient(
+        circle at top right,
+        rgba(115, 177, 151, 0.18),
+        transparent 24%
+      ),
+      linear-gradient(180deg, #fffdf8 0%, #f6efe2 48%, #fbf7ef 100%);
+  }
+}
+
+@keyframes spark-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes spark-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@layer components {
+  .spark-panel {
+    background: rgba(var(--spark-shell), 0.72);
+    border: 1px solid rgba(var(--spark-shadow), 0.1);
+    box-shadow: 0 24px 80px rgba(var(--spark-shadow), 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .spark-display {
+    font-family: var(--spark-display);
+    letter-spacing: -0.04em;
+  }
+
+  .animate-spark-rise {
+    animation: spark-rise 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .animate-spark-float {
+    animation: spark-float 6s ease-in-out infinite;
   }
 }

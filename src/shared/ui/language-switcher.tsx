@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Globe2 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 
 const SUPPORTED_LANGUAGES = [
@@ -15,16 +16,19 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   return (
     <label
       className={cn(
-        'flex items-center gap-2 text-xs text-muted-foreground',
+        'spark-panel inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs text-muted-foreground',
         className,
       )}
     >
-      <span>{t('common.language')}:</span>
+      <Globe2 className='size-3.5 text-primary' />
+      <span className='font-semibold uppercase tracking-[0.18em]'>
+        {t('common.language')}
+      </span>
       <select
-        className='h-8 rounded-md border border-input bg-background px-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50'
+        className='h-8 rounded-full border border-border/60 bg-white/65 pl-4 pr-9 text-xs font-medium text-foreground shadow-sm outline-none transition focus:ring-2 focus:ring-ring/30'
         value={currentLanguage}
         onChange={(event) => {
-          void i18n.changeLanguage(event.target.value);
+          i18n.changeLanguage(event.target.value);
         }}
       >
         {SUPPORTED_LANGUAGES.map((language) => (

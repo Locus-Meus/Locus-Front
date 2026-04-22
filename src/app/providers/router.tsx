@@ -14,13 +14,12 @@ const router = createBrowserRouter([
   { path: '/', element: <SignInPage /> },
   { path: '/sign-in', element: <SignInPage /> },
   { path: '/callback', element: <CallbackPage /> },
+  { path: '/gallery', element: <GalleryPage /> },
 
-  {
-    element: <RequireAuth />,
-    children: [
-      { path: '/gallery', element: <GalleryPage /> },
-    ],
-  },
+  // {
+  //   element: <RequireAuth />,
+  //   children: [{ path: '/gallery', element: <GalleryPage /> }],
+  // },
 
   { path: '*', element: <Navigate to='/' replace /> },
 ]);
