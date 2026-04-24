@@ -2,37 +2,76 @@
 
 ## Current Direction
 
-- Authentication is being moved to Java backend.
-- Local frontend auth pages for sign-up/reset-password were removed.
-- Public auth entry is now a welcome-style sign-in page at `/` (also reachable by `/sign-in`).
+- Auth is externalized to Java OAuth2/OIDC backend.
+- Frontend uses Authorization Code + PKCE for both interactive login and silent re-auth.
+- Public entry remains `/` (also `/sign-in`), protected app starts at `/gallery`.
+- Local sign-up/reset pages are removed from frontend routing.
 
-## Current Flow
+## Runtime Flow (Current)
 
-- Sign In button calls `navigateToLogin()` from:
-  - `src/features/auth/model/navigate-to-login.ts`
-- `navigateToLogin()`:
-  - Generates PKCE challenge/verifier via `pkce-challenge` library.
-  - Generates OAuth `state` in frontend.
-  - Stores PKCE verifier + state in session storage via `pkce-storage`.
-  - Builds OAuth2 authorize URL and redirects browser.
+- `AuthSessionManager` (`src/features/auth/ui/auth-session-manager.tsx`) is mounted by `App` (`src/app/App.tsx`) only in top-level window, not in iframe context.
+- User-initiated sign in:
+  - `navigateToLogin()` -> `createPkceAuthorizationRequest({ redirectUri })` -> browser redirect to `/oauth2/authorize`.
+- Silent auth / silent refresh:
+  - `authenticateSilently()` in `src/features/auth/model/silent-auth.ts` builds authorize URL with `prompt=none` and `redirectUri = AUTH_CONFIG.silentRedirectUri`.
+  - Hidden iframe navigates to authorize endpoint.
+  - IdP redirects iframe to `/silent-callback`.
+  - `SilentCallbackPage` posts `{ type, search }` back to parent window.
+  - Parent validates origin/source/state and calls `completePkceFlow(search, { redirectUri: silentRedirectUri })`.
+- Token exchange:
+  - `completePkceFlow()` exchanges `code + verifier` using `authApi.exchangeCodeForToken`.
+  - Session is updated in Zustand via `setAuth`.
+  - PKCE context for that state is cleared.
 
-## OAuth2 Authorize Query Shape
+## PKCE Details
 
-Default target:
-- `http://localhost:8888/oauth2/authorize`
+- PKCE generation uses `pkce-challenge` with `S256`.
+- Authorization URL generation is centralized in:
+  - `src/features/auth/model/create-pkce-authorization-request.ts`
+- PKCE context storage is state-keyed:
+  - `src/features/auth/model/pkce-storage.ts`
+  - Storage format supports multiple concurrent states and expires old records (`10m` TTL).
 
-Query params used:
-- `response_type=code`
-- `client_id=react-client`
-- `redirect_uri=http://localhost:5175/callback`
-- `scope=openid%20profile%20read`
-- `code_challenge=<generated>`
-- `code_challenge_method=S256`
-- `state=<generated>`
+## Session Model
+
+Source:
+- `src/entities/session/model/store.ts`
+
+Fields:
+- `isAuth`
+- `token` (access token)
+- `expiresAt` (epoch ms)
+- `user`
+- `isRefreshing`
+- `authCheckComplete`
 
 Notes:
-- Scope is encoded with `%20` separators.
-- Authorize endpoint can be overridden by `VITE_AUTH_AUTHORIZE_ENDPOINT`.
+- No refresh token is used or persisted.
+- `AuthTokenResponse` currently expects only:
+  - `access_token`
+  - `expires_in`
+
+## 401 Handling Strategy
+
+Source:
+- `src/shared/api/base-api-client.ts`
+
+Behavior:
+- Normal API requests include `Authorization: Bearer <token>` if present.
+- On `401`:
+  - Attempt one silent recovery (`recoverUnauthorizedRequest`) and retry original request once.
+  - If recovery fails, execute `onAuthFailure` -> clear session -> redirect to `/`.
+- Auth endpoints in `authApi` pass `skipAuthHandling: true` to avoid recursive interception.
+
+## Guard + Routing
+
+Router (`src/app/providers/router.tsx`):
+- Public: `/`, `/sign-in`, `/callback`, `/silent-callback`
+- Protected: `/gallery`
+
+Guard (`src/app/providers/require-auth.tsx`):
+- If auth status unknown, triggers silent auth and shows loading state.
+- Redirects to `/` only after silent auth check fails.
 
 ## Config Source
 
@@ -42,37 +81,20 @@ Auth config is centralized in:
 Important defaults:
 - `issuer`: `http://localhost:8888`
 - `clientId`: `react-client`
-- `redirectUri`: `http://localhost:5175/callback`
 - `scope`: `openid profile read`
+- `redirectUri`: `VITE_AUTH_REDIRECT_URI` or `<window.origin>/callback`
+- `silentRedirectUri`: `VITE_AUTH_SILENT_REDIRECT_URI` or `<window.origin>/silent-callback`
 - `endpoints.authorize`: `http://localhost:8888/oauth2/authorize`
+- `endpoints.token`: `http://localhost:8888/oauth2/token`
+- `endpoints.signUp`: `http://localhost:8888/sign-up` (unless overridden by env)
 
-## Related Routing/Guards
+## Silent Auth Prerequisites
 
-- Router: `src/app/providers/router.tsx`
-  - Public: `/`, `/sign-in`, `/callback`
-  - Protected: `/gallery`
-- Guard: `src/app/providers/require-auth.tsx`
-  - Redirects unauthenticated users to `/`.
-- Base API client: `src/shared/api/base-api-client.ts`
-  - On 401, clears session and redirects to `/`.
+- IdP/client must register both redirect URIs (`/callback` and `/silent-callback`).
+- IdP authorize endpoint must be embeddable in iframe for silent flow (`X-Frame-Options`/CSP must allow it).
+- Silent callback page must stay same-origin with parent app (`window.location.origin` message validation).
 
-## Removed Local Auth UI
+## Open Questions
 
-Removed files include local forms/pages:
-- `src/features/auth/ui/sign-in-form.tsx`
-- `src/features/auth/ui/sign-up-form.tsx`
-- `src/features/auth/ui/reset-password-form.tsx`
-- `src/pages/sign-up/*`
-- `src/pages/reset-password/*`
-
-## PKCE Implementation Details
-
-- PKCE generation is library-based (`pkce-challenge`) for Spring-compatible `S256`.
-- Storage helper:
-  - `src/features/auth/model/pkce-storage.ts`
-- Callback flow reads verifier/state from storage and clears it after token exchange.
-
-## Open Questions (For Future Updates)
-
-- Final Java sign-up URL/UX contract (currently welcome button redirects via `AUTH_CONFIG.endpoints.signUp`).
-- Whether token exchange remains in frontend callback handler or fully moves server-side.
+- Long-term ownership of user profile mapping (currently placeholder fallback in `completePkceFlow`).
+- Whether token exchange should remain frontend-side or move fully server-side in future architecture.
