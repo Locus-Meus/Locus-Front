@@ -13,6 +13,10 @@ class AuthApi extends BaseApiClient {
     super(AUTH_CONFIG.issuer || '/api');
   }
 
+  public async heartbeat(): Promise<void> {
+    return this.get<void>('/v1/api/heartbeat');
+  }
+
   public async getCsrfToken(): Promise<CsrfToken> {
     return this.get<CsrfToken>(AUTH_CONFIG.endpoints.csrf, {
       skipAuthHandling: true,
