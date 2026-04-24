@@ -1,4 +1,5 @@
 import { useSessionStore } from '@/entities/session';
+import { AUTH_CONFIG } from '@/shared/config/auth';
 import { authApi } from '../api/auth-api';
 import { clearStoredPkceContext, getStoredPkceContext } from './pkce-storage';
 
@@ -6,8 +7,32 @@ import { clearStoredPkceContext, getStoredPkceContext } from './pkce-storage';
  * Validates the OAuth2 callback and exchanges the code for a token.
  * In FSD, this is an "Action" that coordinates between an Entity and an API.
  */
-export async function completePkceFlow(search: string): Promise<void> {
+interface CompletePkceFlowOptions {
+  redirectUri?: string;
+  fallbackUser?: {
+    id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+  };
+}
+
+export async function completePkceFlow(
+  search: string,
+  options?: CompletePkceFlowOptions,
+): Promise<void> {
   const searchParams = new URLSearchParams(search);
+  const returnedState = searchParams.get('state');
+  const oauthError = searchParams.get('error');
+  if (oauthError) {
+    if (returnedState) {
+      clearStoredPkceContext(returnedState);
+    }
+    const description =
+      searchParams.get('error_description') ||
+      'Authorization server rejected the request.';
+    throw new Error(`${oauthError}: ${description}`);
+  }
 
   // 1. Extract the code from the URL
   const code = searchParams.get('code');
@@ -16,12 +41,11 @@ export async function completePkceFlow(search: string): Promise<void> {
   }
 
   // 2. Validate State (Anti-forgery)
-  const { verifier, state: expectedState } = getStoredPkceContext();
-  const returnedState = searchParams.get('state');
-
-  if (expectedState && returnedState !== expectedState) {
-    throw new Error('OAuth state check failed. Potential security risk.');
+  if (!returnedState) {
+    throw new Error('OAuth state is missing in callback URL.');
   }
+
+  const { verifier } = getStoredPkceContext(returnedState);
 
   // 3. Verify we have the PKCE Verifier
   if (!verifier) {
@@ -31,18 +55,29 @@ export async function completePkceFlow(search: string): Promise<void> {
   }
 
   // 4. Exchange the code for the final JWT via Java Backend
-  const tokenResponse = await authApi.exchangeCodeForToken(code, verifier);
+  try {
+    const tokenResponse = await authApi.exchangeCodeForToken(
+      code,
+      verifier,
+      options?.redirectUri ?? AUTH_CONFIG.redirectUri,
+    );
 
-  // 5. Update the Zustand Entity Store
-  // We use setAuth to save the token and mark the user as authenticated
-  const { setAuth } = useSessionStore.getState();
+    // 5. Update the Zustand Entity Store
+    const { setAuth, user } = useSessionStore.getState();
 
-  setAuth(tokenResponse.access_token, {
-    // Note: If Java sends user info in the tokenResponse, map it here
-    id: 'placeholder-id',
-    email: 'user@example.com',
-  });
-
-  // 6. Cleanup sensitive temporary data
-  clearStoredPkceContext();
+    setAuth(
+      {
+        accessToken: tokenResponse.access_token,
+        expiresIn: tokenResponse.expires_in,
+      },
+      user ??
+        options?.fallbackUser ?? {
+          id: 'placeholder-id',
+          email: 'user@example.com',
+        },
+    );
+  } finally {
+    // 6. Cleanup sensitive temporary data
+    clearStoredPkceContext(returnedState);
+  }
 }

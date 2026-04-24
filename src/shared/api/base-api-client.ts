@@ -1,5 +1,34 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
+import axios, {
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 import { useSessionStore } from '@/entities/session';
+
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    skipAuthHandling?: boolean;
+  }
+
+  interface InternalAxiosRequestConfig {
+    skipAuthHandling?: boolean;
+    _authRetry?: boolean;
+  }
+}
+
+type RecoverUnauthorizedRequest = () => Promise<boolean>;
+type AuthFailureHandler = () => void;
+
+let recoverUnauthorizedRequest: RecoverUnauthorizedRequest | null = null;
+let authFailureHandler: AuthFailureHandler | null = null;
+
+export function configureApiAuthHandlers(options: {
+  recoverUnauthorizedRequest?: RecoverUnauthorizedRequest;
+  onAuthFailure?: AuthFailureHandler;
+}): void {
+  recoverUnauthorizedRequest = options.recoverUnauthorizedRequest ?? null;
+  authFailureHandler = options.onAuthFailure ?? null;
+}
 
 export class BaseApiClient {
   protected axios: AxiosInstance;
@@ -29,11 +58,37 @@ export class BaseApiClient {
     // Handle Auth Errors
     this.axios.interceptors.response.use(
       (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          useSessionStore.getState().logout();
-          window.location.href = '/';
+      async (error) => {
+        const originalRequest = error.config as
+          | InternalAxiosRequestConfig
+          | undefined;
+
+        if (
+          error.response?.status === 401 &&
+          originalRequest &&
+          !originalRequest.skipAuthHandling
+        ) {
+          if (!originalRequest._authRetry && recoverUnauthorizedRequest) {
+            originalRequest._authRetry = true;
+
+            try {
+              const recovered = await recoverUnauthorizedRequest();
+              if (recovered) {
+                return this.axios.request(originalRequest);
+              }
+            } catch {
+              // Fall through to auth failure handling below.
+            }
+          }
+
+          if (authFailureHandler) {
+            authFailureHandler();
+          } else {
+            useSessionStore.getState().logout();
+            window.location.href = '/';
+          }
         }
+
         return Promise.reject(error);
       },
     );
@@ -47,7 +102,7 @@ export class BaseApiClient {
 
   protected async post<T>(
     url: string,
-    body?: any,
+    body?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<T> {
     const { data } = await this.axios.post<T>(url, body, config);
