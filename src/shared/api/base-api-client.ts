@@ -48,6 +48,10 @@ export class BaseApiClient {
   private setupInterceptors() {
     // Inject Token
     this.axios.interceptors.request.use((config) => {
+      if (config.skipAuthHandling) {
+        return config;
+      }
+
       const token = useSessionStore.getState().token;
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
