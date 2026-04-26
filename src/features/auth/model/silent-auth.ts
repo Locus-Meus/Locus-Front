@@ -6,6 +6,7 @@ import { createPkceAuthorizationRequest } from './create-pkce-authorization-requ
 
 export const SILENT_AUTH_MESSAGE_TYPE = 'vis:silent-auth-callback';
 export const SILENT_REFRESH_LEEWAY_MS = 60_000;
+const MIN_TTL_RATIO_BEFORE_REFRESH = 0.5;
 
 const SILENT_AUTH_TIMEOUT_MS = 15_000;
 
@@ -170,11 +171,22 @@ export function scheduleSilentRefresh(expiresAt: number | null): void {
 
   clearScheduledRefresh();
 
-  if (!expiresAt) {
+  if (typeof expiresAt !== 'number' || !Number.isFinite(expiresAt)) {
     return;
   }
 
-  const delay = Math.max(expiresAt - Date.now() - SILENT_REFRESH_LEEWAY_MS, 0);
+  const timeUntilExpiry = expiresAt - Date.now();
+  if (timeUntilExpiry <= 0) {
+    return;
+  }
+
+  // Keep refresh proactive but avoid immediate authorize calls on short-lived tokens.
+  const effectiveLeeway = Math.min(
+    SILENT_REFRESH_LEEWAY_MS,
+    Math.floor(timeUntilExpiry * MIN_TTL_RATIO_BEFORE_REFRESH),
+  );
+  const delay = timeUntilExpiry - effectiveLeeway;
+
   scheduledRefreshId = window.setTimeout(() => {
     void authenticateSilently().catch(() => {
       handleAuthFailure();

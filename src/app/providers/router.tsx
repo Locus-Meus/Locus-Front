@@ -16,7 +16,6 @@ const router = createBrowserRouter([
   { path: '/sign-in', element: <SignInPage /> },
   { path: '/callback', element: <CallbackPage /> },
   { path: '/silent-callback', element: <SilentCallbackPage /> },
-
   {
     element: <RequireAuth />,
     children: [
