@@ -87,6 +87,19 @@ class AuthApi extends BaseApiClient {
       skipAuthHandling: true,
     });
   }
+
+  public async logout(csrf: CsrfToken): Promise<void> {
+    const params = new URLSearchParams();
+    params.set(csrf.parameterName, csrf.token);
+
+    return this.post<void>(AUTH_CONFIG.endpoints.logout, params, {
+      headers: {
+        [csrf.headerName]: csrf.token,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      skipAuthHandling: true,
+    });
+  }
 }
 
 export const authApi = new AuthApi();
