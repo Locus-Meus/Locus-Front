@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -31,40 +31,6 @@ export function GalleryPage() {
 
   /* Get tokens from Zustand Store */
   const { token, logout: clearSession } = useSessionStore();
-
-  useEffect(() => {
-    let isActive = true;
-    let isInFlight = false;
-
-    const sendHeartbeat = async () => {
-      if (!isActive || isInFlight) {
-        return;
-      }
-
-      isInFlight = true;
-
-      try {
-        await authApi.heartbeat();
-      } catch (heartbeatError) {
-        if (isActive) {
-          console.error('Heartbeat request failed:', heartbeatError);
-        }
-      } finally {
-        isInFlight = false;
-      }
-    };
-
-    void sendHeartbeat();
-
-    const intervalId = window.setInterval(() => {
-      void sendHeartbeat();
-    }, 1000);
-
-    return () => {
-      isActive = false;
-      window.clearInterval(intervalId);
-    };
-  }, []);
 
   const handleLogout = async () => {
     setIsPending(true);
