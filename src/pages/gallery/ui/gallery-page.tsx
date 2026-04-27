@@ -37,17 +37,16 @@ export function GalleryPage() {
     setError(null);
 
     try {
-      // 1. Get CSRF for secure logout from Java
       const csrfToken = await authApi.getCsrfToken();
-      // 2. Call Java logout endpoint
+
       await authApi.logout(csrfToken);
+
+      clearSession();
+      navigate('/', { replace: true });
     } catch (err) {
       // We still proceed with local logout even if server call fails
       setError(err instanceof Error ? err.message : t('gallery.logoutFailed'));
     } finally {
-      // 3. Clear local state and redirect
-      clearSession();
-      navigate('/', { replace: true });
       setIsPending(false);
     }
   };

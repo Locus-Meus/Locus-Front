@@ -21,19 +21,16 @@ export const AUTH_CONFIG = {
 
   endpoints: {
     // Session & Security
-    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'csrf-token',
+    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'api/csrf-token',
     signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || 'api/sign-in',
 
     // OAuth2 / PKCE Flow
     authorize:
-      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT ||
-      'http://localhost:8888/oauth2/authorize',
-    token:
-      import.meta.env.VITE_AUTH_TOKEN_ENDPOINT ||
-      'http://localhost:8888/oauth2/token',
+      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'api/oauth2/authorize',
+    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
 
     // Management
-    logout: 'logout',
+    logout: 'api/logout',
     signUp:
       import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT ||
       'http://localhost:8888/sign-up',

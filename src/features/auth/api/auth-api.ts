@@ -51,8 +51,6 @@ class AuthApi extends BaseApiClient {
   }
 
   public async logout(csrf: CsrfToken): Promise<void> {
-    console.log(csrf);
-
     const params = new URLSearchParams();
     params.set(csrf.parameterName, csrf.token);
 
