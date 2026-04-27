@@ -13,8 +13,14 @@ class AuthApi extends BaseApiClient {
     super(AUTH_CONFIG.issuer || '/api');
   }
 
+  public async heartbeat(): Promise<void> {
+    return this.get<void>('/v1/api/heartbeat');
+  }
+
   public async getCsrfToken(): Promise<CsrfToken> {
-    return this.get<CsrfToken>(AUTH_CONFIG.endpoints.csrf);
+    return this.get<CsrfToken>(AUTH_CONFIG.endpoints.csrf, {
+      skipAuthHandling: true,
+    });
   }
 
   public async signUp(payload: SignUpPayload, csrf: CsrfToken): Promise<void> {
@@ -34,6 +40,7 @@ class AuthApi extends BaseApiClient {
         headers: {
           [csrf.headerName]: csrf.token,
         },
+        skipAuthHandling: true,
       },
     );
   }
@@ -46,6 +53,7 @@ class AuthApi extends BaseApiClient {
 
     return this.post(AUTH_CONFIG.endpoints.signIn, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      skipAuthHandling: true,
     });
   }
 
@@ -57,6 +65,7 @@ class AuthApi extends BaseApiClient {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
+      skipAuthHandling: true,
     });
   }
 
@@ -68,23 +77,26 @@ class AuthApi extends BaseApiClient {
       headers: {
         [csrf.headerName]: csrf.token,
       },
+      skipAuthHandling: true,
     });
   }
 
   public async exchangeCodeForToken(
     code: string,
     verifier: string,
+    redirectUri: string = AUTH_CONFIG.redirectUri,
   ): Promise<AuthTokenResponse> {
     const params = new URLSearchParams();
     params.set('grant_type', 'authorization_code');
     params.set('code', code);
     params.set('code_verifier', verifier);
-    params.set('redirect_uri', AUTH_CONFIG.redirectUri);
+    params.set('redirect_uri', redirectUri);
     params.set('client_id', AUTH_CONFIG.clientId);
     // params.set('client_secret', AUTH_CONFIG.clientSecret);
 
     return this.post<AuthTokenResponse>(AUTH_CONFIG.endpoints.token, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      skipAuthHandling: true,
     });
   }
 }

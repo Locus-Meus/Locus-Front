@@ -8,13 +8,14 @@ import { RequireAuth } from './require-auth';
 import { SignInPage } from '@/pages/sign-in';
 import { GalleryPage } from '@/pages/gallery';
 import { CallbackPage } from '@/pages/callback';
+import { SilentCallbackPage } from '@/pages/silent-callback';
 
 const router = createBrowserRouter([
   // Public Routes
   { path: '/', element: <SignInPage /> },
   { path: '/sign-in', element: <SignInPage /> },
   { path: '/callback', element: <CallbackPage /> },
-
+  { path: '/silent-callback', element: <SilentCallbackPage /> },
   {
     element: <RequireAuth />,
     children: [
