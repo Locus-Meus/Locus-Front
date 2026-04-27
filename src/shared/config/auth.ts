@@ -8,7 +8,7 @@ function getDefaultRedirectUri(path: string): string {
 }
 
 export const AUTH_CONFIG = {
-  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
+  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:5175',
   clientId: 'react-client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile read',
