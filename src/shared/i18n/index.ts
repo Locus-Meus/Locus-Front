@@ -81,6 +81,19 @@ const resources = {
         failedTitle: 'Authentication failed',
         retryFlow: 'Retry PKCE flow',
       },
+      verifyEmail: {
+        verifyingTitle: 'Verifying your email',
+        verifyingDescription: 'Checking verification token...',
+        successTitle: 'Email verified',
+        successDescription:
+          'Your email has been confirmed. You can sign in now.',
+        failedTitle: 'Email verification failed',
+        failedMessage: 'Could not verify your email. Please try again later.',
+        expiredTitle: 'Verification link expired',
+        expiredMessage:
+          'This verification token has expired. Request a new email verification link.',
+        missingToken: 'Verification token is missing in URL.',
+      },
       gallery: {
         title: 'Gallery',
         description:
@@ -171,6 +184,19 @@ const resources = {
         failedTitle: 'Autenticacion fallida',
         retryFlow: 'Reintentar flujo PKCE',
       },
+      verifyEmail: {
+        verifyingTitle: 'Verificando tu correo',
+        verifyingDescription: 'Comprobando token de verificacion...',
+        successTitle: 'Correo verificado',
+        successDescription: 'Tu correo ya esta confirmado. Ya puedes iniciar sesion.',
+        failedTitle: 'Fallo la verificacion de correo',
+        failedMessage:
+          'No se pudo verificar tu correo. Intentalo de nuevo mas tarde.',
+        expiredTitle: 'Enlace de verificacion vencido',
+        expiredMessage:
+          'Este token de verificacion vencio. Solicita un nuevo enlace.',
+        missingToken: 'Falta el token de verificacion en la URL.',
+      },
       gallery: {
         title: 'Galeria',
         description:
@@ -259,6 +285,20 @@ const resources = {
         validating: 'Проверяем код и создаем сессию...',
         failedTitle: 'Ошибка авторизации',
         retryFlow: 'Повторить PKCE',
+      },
+      verifyEmail: {
+        verifyingTitle: 'Подтверждаем email',
+        verifyingDescription: 'Проверяем токен подтверждения...',
+        successTitle: 'Email подтвержден',
+        successDescription:
+          'Ваш email успешно подтвержден. Теперь можно войти.',
+        failedTitle: 'Не удалось подтвердить email',
+        failedMessage:
+          'Не удалось подтвердить email. Попробуйте снова позже.',
+        expiredTitle: 'Ссылка подтверждения истекла',
+        expiredMessage:
+          'Срок действия этого токена истек. Запросите новую ссылку подтверждения.',
+        missingToken: 'В URL отсутствует токен подтверждения.',
       },
       gallery: {
         title: 'Галерея',
