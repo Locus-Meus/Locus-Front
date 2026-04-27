@@ -31,6 +31,19 @@ class AuthApi extends BaseApiClient {
     });
   }
 
+  public async verifyEmail(token: string): Promise<void> {
+    const params = new URLSearchParams();
+    params.set('token', token);
+
+    return this.post<void>(
+      `${AUTH_CONFIG.endpoints.verifyEmail}?${params.toString()}`,
+      undefined,
+      {
+        skipAuthHandling: true,
+      },
+    );
+  }
+
   public async exchangeCodeForToken(
     code: string,
     verifier: string,
