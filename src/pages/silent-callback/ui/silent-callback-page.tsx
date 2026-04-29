@@ -6,7 +6,7 @@ export function SilentCallbackPage() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (window.parent === window) {
+    if (window.parent === window.top) {
       return;
     }
 
@@ -21,7 +21,9 @@ export function SilentCallbackPage() {
 
   return (
     <main className='flex min-h-screen items-center justify-center px-4 py-8'>
-      <p className='text-sm text-muted-foreground'>{t('callback.validating')}</p>
+      <p className='text-sm text-muted-foreground'>
+        {t('callback.validating')}
+      </p>
     </main>
   );
 }
