@@ -6,7 +6,7 @@ export function SilentCallbackPage() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (window.parent === window.top) {
+    if (window.parent === window) {
       return;
     }
 
