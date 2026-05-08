@@ -188,7 +188,8 @@ const resources = {
         verifyingTitle: 'Verificando tu correo',
         verifyingDescription: 'Comprobando token de verificacion...',
         successTitle: 'Correo verificado',
-        successDescription: 'Tu correo ya esta confirmado. Ya puedes iniciar sesion.',
+        successDescription:
+          'Tu correo ya esta confirmado. Ya puedes iniciar sesion.',
         failedTitle: 'Fallo la verificacion de correo',
         failedMessage:
           'No se pudo verificar tu correo. Intentalo de nuevo mas tarde.',
@@ -293,8 +294,7 @@ const resources = {
         successDescription:
           'Ваш email успешно подтвержден. Теперь можно войти.',
         failedTitle: 'Не удалось подтвердить email',
-        failedMessage:
-          'Не удалось подтвердить email. Попробуйте снова позже.',
+        failedMessage: 'Не удалось подтвердить email. Попробуйте снова позже.',
         expiredTitle: 'Ссылка подтверждения истекла',
         expiredMessage:
           'Срок действия этого токена истек. Запросите новую ссылку подтверждения.',
@@ -328,9 +328,11 @@ i18n
       escapeValue: false,
     },
     detection: {
-      order: ['querystring', 'localStorage', 'navigator'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'app_lang',
+      order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+      caches: ['cookie', 'localStorage'],
+      lookupLocalStorage: 'lang',
+      lookupCookie: 'lang',
+      cookieMinutes: 10080, // 7 days
     },
   })
   .catch((error) => {
