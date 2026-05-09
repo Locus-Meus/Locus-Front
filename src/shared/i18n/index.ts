@@ -137,6 +137,8 @@ const resources = {
         signOut: 'Sign out',
         signingOut: 'Signing out...',
         accessToken: 'Access token',
+        copyToken: 'Copy token',
+        tokenCopied: 'Token copied',
         tokenNotAvailable: 'n/a',
         logoutFailed: 'Logout failed.',
         imageUpload: {
@@ -323,6 +325,8 @@ const resources = {
         signOut: 'Cerrar sesion',
         signingOut: 'Cerrando sesion...',
         accessToken: 'Token de acceso',
+        copyToken: 'Copiar token',
+        tokenCopied: 'Token copiado',
         tokenNotAvailable: 'n/d',
         logoutFailed: 'Fallo al cerrar sesion.',
         imageUpload: {
@@ -507,6 +511,8 @@ const resources = {
         signOut: 'Выйти',
         signingOut: 'Выход...',
         accessToken: 'Access token',
+        copyToken: 'Скопировать токен',
+        tokenCopied: 'Токен скопирован',
         tokenNotAvailable: 'н/д',
         logoutFailed: 'Не удалось выйти.',
         imageUpload: {

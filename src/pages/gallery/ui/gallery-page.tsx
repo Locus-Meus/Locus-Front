@@ -5,6 +5,7 @@ import {
   Flame,
   Heart,
   LogOut,
+  Copy,
   Sparkles,
   ThumbsDown,
 } from 'lucide-react';
@@ -23,6 +24,7 @@ export function GalleryPage() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPending, setIsPending] = useState(false);
+  const [isTokenCopied, setIsTokenCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
 
@@ -113,6 +115,18 @@ export function GalleryPage() {
       ...current,
       [activeSlide.id]: current[activeSlide.id] === value ? null : value,
     }));
+  };
+
+  const handleCopyToken = async () => {
+    if (!token) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(token);
+    setIsTokenCopied(true);
+    window.setTimeout(() => {
+      setIsTokenCopied(false);
+    }, 2000);
   };
 
   const reactionMessage =
@@ -291,9 +305,20 @@ export function GalleryPage() {
               <p className='text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground'>
                 {t('gallery.accessToken')}
               </p>
-              <p className='mt-3 break-all rounded-[20px] bg-white/66 px-4 py-3 font-mono text-xs leading-6 text-foreground/84'>
-                {token ?? t('gallery.tokenNotAvailable')}
-              </p>
+              <Button
+                className='mt-4 h-12 w-full justify-between rounded-full border-white/60 bg-white/70 px-5'
+                type='button'
+                variant='outline'
+                onClick={handleCopyToken}
+                disabled={!token}
+              >
+                {token
+                  ? isTokenCopied
+                    ? t('gallery.tokenCopied')
+                    : t('gallery.copyToken')
+                  : t('gallery.tokenNotAvailable')}
+                <Copy className='size-4' />
+              </Button>
             </div>
 
             <div className='spark-panel rounded-[32px] p-5'>
