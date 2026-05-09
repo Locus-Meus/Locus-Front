@@ -5,7 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { contentApi } from '@/features/content';
 import { Button } from '@/shared/ui';
 
-export function ImageUpload() {
+type ImageUploadProps = {
+  onUploaded?: () => void;
+};
+
+export function ImageUpload({ onUploaded }: ImageUploadProps) {
   const { t } = useTranslation();
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -46,6 +50,7 @@ export function ImageUpload() {
       await contentApi.uploadImages(files);
       setFiles([]);
       setIsUploaded(true);
+      onUploaded?.();
 
       if (inputRef.current) {
         inputRef.current.value = '';

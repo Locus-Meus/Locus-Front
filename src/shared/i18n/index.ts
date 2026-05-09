@@ -155,6 +155,15 @@ const resources = {
           failed: 'Image upload failed.',
           emptyError: 'Choose at least one image to upload.',
         },
+        images: {
+          title: 'Uploaded images',
+          loading: 'Loading images...',
+          empty: 'No uploaded images yet.',
+          failed: 'Could not load images.',
+          refresh: 'Refresh images',
+          open: 'Open image {{number}}',
+          alt: 'Uploaded image {{number}}',
+        },
         slides: {
           ignition: {
             badge: 'Morning ignition',
@@ -343,6 +352,15 @@ const resources = {
           failed: 'Fallo al subir imagenes.',
           emptyError: 'Elige al menos una imagen para subir.',
         },
+        images: {
+          title: 'Imagenes subidas',
+          loading: 'Cargando imagenes...',
+          empty: 'Aun no hay imagenes subidas.',
+          failed: 'No se pudieron cargar las imagenes.',
+          refresh: 'Actualizar imagenes',
+          open: 'Abrir imagen {{number}}',
+          alt: 'Imagen subida {{number}}',
+        },
         slides: {
           ignition: {
             badge: 'Ignicion matinal',
@@ -528,6 +546,15 @@ const resources = {
           success: 'Изображения успешно загружены.',
           failed: 'Не удалось загрузить изображения.',
           emptyError: 'Выберите хотя бы одно изображение для загрузки.',
+        },
+        images: {
+          title: 'Загруженные изображения',
+          loading: 'Загружаем изображения...',
+          empty: 'Загруженных изображений пока нет.',
+          failed: 'Не удалось загрузить изображения.',
+          refresh: 'Обновить изображения',
+          open: 'Открыть изображение {{number}}',
+          alt: 'Загруженное изображение {{number}}',
         },
         slides: {
           ignition: {

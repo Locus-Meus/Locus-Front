@@ -16,6 +16,7 @@ import { useSessionStore } from '@/entities/session';
 import { authApi } from '@/features/auth';
 import { Button, LanguageSwitcher } from '@/shared/ui';
 import { ImageUpload } from './image-upload';
+import { PresignedImagesGallery } from './presigned-images-gallery';
 
 type Reaction = 'like' | 'dislike' | null;
 
@@ -24,6 +25,7 @@ export function GalleryPage() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPending, setIsPending] = useState(false);
+  const [imagesRefreshKey, setImagesRefreshKey] = useState(0);
   const [isTokenCopied, setIsTokenCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
@@ -299,7 +301,13 @@ export function GalleryPage() {
           </article>
 
           <aside className='space-y-4'>
-            <ImageUpload />
+            <ImageUpload
+              onUploaded={() => {
+                setImagesRefreshKey((current) => current + 1);
+              }}
+            />
+
+            <PresignedImagesGallery refreshKey={imagesRefreshKey} />
 
             <div className='spark-panel rounded-[32px] p-5'>
               <p className='text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground'>
