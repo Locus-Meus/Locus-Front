@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useSessionStore } from '@/entities/session';
 import { authApi } from '@/features/auth';
 import { Button, LanguageSwitcher } from '@/shared/ui';
+import { ImageUpload } from './image-upload';
 
 type Reaction = 'like' | 'dislike' | null;
 
@@ -25,7 +26,7 @@ export function GalleryPage() {
   const [error, setError] = useState<string | null>(null);
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
 
-  const { user, logout: clearSession } = useSessionStore();
+  const { user, token, logout: clearSession } = useSessionStore();
 
   const slides = [
     {
@@ -284,6 +285,8 @@ export function GalleryPage() {
           </article>
 
           <aside className='space-y-4'>
+            <ImageUpload />
+
             <div className='spark-panel rounded-[32px] p-5'>
               <p className='text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground'>
                 {t('gallery.deckTitle')}
@@ -356,6 +359,15 @@ export function GalleryPage() {
                   <ThumbsDown className='size-4' />
                 </Button>
               </div>
+            </div>
+
+            <div className='spark-panel rounded-[32px] p-5'>
+              <p className='text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground'>
+                {t('gallery.accessToken')}
+              </p>
+              <p className='mt-3 break-all rounded-[20px] bg-white/66 px-4 py-3 font-mono text-xs leading-6 text-foreground/84'>
+                {token ?? t('gallery.tokenNotAvailable')}
+              </p>
             </div>
 
             {error && (

@@ -139,6 +139,20 @@ const resources = {
         accessToken: 'Access token',
         tokenNotAvailable: 'n/a',
         logoutFailed: 'Logout failed.',
+        imageUpload: {
+          title: 'Upload images',
+          description: 'Add one or more images to the content gallery.',
+          choose: 'Choose images',
+          hint: 'PNG, JPG, GIF, or any supported image file',
+          selected: '{{count}} image selected',
+          selected_plural: '{{count}} images selected',
+          clear: 'Clear selected images',
+          upload: 'Upload',
+          uploading: 'Uploading...',
+          success: 'Images uploaded successfully.',
+          failed: 'Image upload failed.',
+          emptyError: 'Choose at least one image to upload.',
+        },
         slides: {
           ignition: {
             badge: 'Morning ignition',
@@ -311,6 +325,20 @@ const resources = {
         accessToken: 'Token de acceso',
         tokenNotAvailable: 'n/d',
         logoutFailed: 'Fallo al cerrar sesion.',
+        imageUpload: {
+          title: 'Subir imagenes',
+          description: 'Agrega una o mas imagenes a la galeria de contenido.',
+          choose: 'Elegir imagenes',
+          hint: 'PNG, JPG, GIF o cualquier imagen compatible',
+          selected: '{{count}} imagen seleccionada',
+          selected_plural: '{{count}} imagenes seleccionadas',
+          clear: 'Limpiar imagenes seleccionadas',
+          upload: 'Subir',
+          uploading: 'Subiendo...',
+          success: 'Imagenes subidas correctamente.',
+          failed: 'Fallo al subir imagenes.',
+          emptyError: 'Elige al menos una imagen para subir.',
+        },
         slides: {
           ignition: {
             badge: 'Ignicion matinal',
@@ -481,6 +509,20 @@ const resources = {
         accessToken: 'Access token',
         tokenNotAvailable: 'н/д',
         logoutFailed: 'Не удалось выйти.',
+        imageUpload: {
+          title: 'Загрузить изображения',
+          description: 'Добавьте одно или несколько изображений в галерею.',
+          choose: 'Выбрать изображения',
+          hint: 'PNG, JPG, GIF или любой поддерживаемый файл изображения',
+          selected: 'Выбрано изображений: {{count}}',
+          selected_plural: 'Выбрано изображений: {{count}}',
+          clear: 'Очистить выбранные изображения',
+          upload: 'Загрузить',
+          uploading: 'Загрузка...',
+          success: 'Изображения успешно загружены.',
+          failed: 'Не удалось загрузить изображения.',
+          emptyError: 'Выберите хотя бы одно изображение для загрузки.',
+        },
         slides: {
           ignition: {
             badge: 'Утренний старт',
