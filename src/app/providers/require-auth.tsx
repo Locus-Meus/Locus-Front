@@ -1,15 +1,43 @@
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSessionStore } from '@/entities/session';
-import { storeRedirectUrl } from '@/features/auth';
+import { authenticateSilently, storeRedirectUrl } from '@/features/auth';
 
 export const RequireAuth = () => {
+  const { t } = useTranslation();
   const isAuth = useSessionStore((state) => state.isAuth);
+  const isRefreshing = useSessionStore((state) => state.isRefreshing);
+  const authCheckComplete = useSessionStore((state) => state.authCheckComplete);
   const location = useLocation();
 
-  // MOCK LOGIC:
-  // You can manually go to your browser console and type:
-  // useSessionStore.getState().setAuth('fake-token', { id: '1', email: 'test@test.com' })
-  // to "unlock" the app.
+  useEffect(() => {
+    if (isAuth || isRefreshing || authCheckComplete) {
+      return;
+    }
+
+    const redirectUrl = `${location.pathname}${location.search}${location.hash}`;
+    storeRedirectUrl(redirectUrl);
+
+    void authenticateSilently().catch(() => {
+      useSessionStore.getState().setAuthCheckComplete(true);
+    });
+  }, [
+    authCheckComplete,
+    isAuth,
+    isRefreshing,
+    location.hash,
+    location.pathname,
+    location.search,
+  ]);
+
+  if (isRefreshing || (!isAuth && !authCheckComplete)) {
+    return (
+      <main className='flex min-h-screen items-center justify-center px-4 py-8'>
+        <p className='text-sm text-muted-foreground'>{t('callback.validating')}</p>
+      </main>
+    );
+  }
 
   if (!isAuth) {
     const redirectUrl = `${location.pathname}${location.search}${location.hash}`;

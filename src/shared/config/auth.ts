@@ -1,23 +1,36 @@
+function getDefaultRedirectUri(path: string): string {
+  const origin =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : 'http://localhost:5175';
+
+  return `${origin}${path}`;
+}
+
 export const AUTH_CONFIG = {
-  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:8888',
+  issuer: import.meta.env.VITE_AUTH_ISSUER || 'http://localhost:5175',
   clientId: 'react-client',
   clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET || 'secret',
   scope: import.meta.env.VITE_AUTH_SCOPE || 'openid profile read',
   redirectUri:
-    import.meta.env.VITE_AUTH_REDIRECT_URI || 'http://localhost:5175/callback',
+    import.meta.env.VITE_AUTH_REDIRECT_URI ||
+    getDefaultRedirectUri('/callback'),
+  silentRedirectUri:
+    import.meta.env.VITE_AUTH_SILENT_REDIRECT_URI ||
+    getDefaultRedirectUri('/silent-callback'),
 
   endpoints: {
     // Session & Security
     csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'api/csrf-token',
     signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || 'api/sign-in',
+    verifyEmail:
+      import.meta.env.VITE_AUTH_VERIFY_EMAIL_ENDPOINT ||
+      'api/emails/verify',
 
     // OAuth2 / PKCE Flow
     authorize:
-      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT ||
-      'http://localhost:8888/oauth2/authorize',
-    token:
-      import.meta.env.VITE_AUTH_TOKEN_ENDPOINT ||
-      'http://localhost:8888/oauth2/token',
+      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'api/oauth2/authorize',
+    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
 
     // Management
     logout: 'api/logout',

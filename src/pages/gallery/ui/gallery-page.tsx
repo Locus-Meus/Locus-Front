@@ -85,11 +85,12 @@ export function GalleryPage() {
     try {
       const csrfToken = await authApi.getCsrfToken();
       await authApi.logout(csrfToken);
+
+      clearSession();
+      navigate('/', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('gallery.logoutFailed'));
     } finally {
-      clearSession();
-      navigate('/', { replace: true });
       setIsPending(false);
     }
   };
