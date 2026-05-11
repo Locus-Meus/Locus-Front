@@ -24,12 +24,11 @@ export const AUTH_CONFIG = {
     csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'api/csrf-token',
     signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || 'api/sign-in',
     verifyEmail:
-      import.meta.env.VITE_AUTH_VERIFY_EMAIL_ENDPOINT ||
-      'api/emails/verify',
+      import.meta.env.VITE_AUTH_VERIFY_EMAIL_ENDPOINT || 'api/emails/verify',
 
     // OAuth2 / PKCE Flow
     authorize:
-      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'api/oauth2/authorize',
+      import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'oauth2/authorize',
     token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
 
     // Management
