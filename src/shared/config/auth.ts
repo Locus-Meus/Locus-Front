@@ -31,7 +31,7 @@ export const AUTH_CONFIG = {
     token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'oauth2/token',
 
     // Management
-    logout: 'api/logout',
+    logout: 'logout',
     signUp:
       import.meta.env.VITE_AUTH_SIGN_UP_ENDPOINT ||
       'http://localhost:8888/sign-up',
