@@ -16,7 +16,7 @@ import { useSessionStore } from '@/entities/session';
 import { authApi } from '@/features/auth';
 import { Button, LanguageSwitcher } from '@/shared/ui';
 import { ImageUpload } from './image-upload';
-import { PresignedImagesGallery } from './presigned-images-gallery';
+// import { PresignedImagesGallery } from './presigned-images-gallery';
 
 type Reaction = 'like' | 'dislike' | null;
 
@@ -307,7 +307,7 @@ export function GalleryPage() {
               }}
             />
 
-            <PresignedImagesGallery refreshKey={imagesRefreshKey} />
+            {/* <PresignedImagesGallery refreshKey={imagesRefreshKey} /> */}
 
             <div className='spark-panel rounded-[32px] p-5'>
               <p className='text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground'>
