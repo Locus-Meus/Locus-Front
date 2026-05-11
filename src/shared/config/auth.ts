@@ -21,8 +21,7 @@ export const AUTH_CONFIG = {
 
   endpoints: {
     // Session & Security
-    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'api/csrf-token',
-    signIn: import.meta.env.VITE_AUTH_SIGN_IN_ENDPOINT || 'api/sign-in',
+    csrf: import.meta.env.VITE_AUTH_CSRF_ENDPOINT || 'csrf-token',
     verifyEmail:
       import.meta.env.VITE_AUTH_VERIFY_EMAIL_ENDPOINT || 'api/emails/verify',
 
