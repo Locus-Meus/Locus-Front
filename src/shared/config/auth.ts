@@ -29,7 +29,7 @@ export const AUTH_CONFIG = {
     // OAuth2 / PKCE Flow
     authorize:
       import.meta.env.VITE_AUTH_AUTHORIZE_ENDPOINT || 'oauth2/authorize',
-    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'api/oauth2/token',
+    token: import.meta.env.VITE_AUTH_TOKEN_ENDPOINT || 'oauth2/token',
 
     // Management
     logout: 'api/logout',
