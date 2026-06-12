@@ -3,6 +3,7 @@ import { ImagePlus, Loader2, Upload, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { contentApi } from '@/features/content';
+import { useMutationRequest } from '@/shared/api';
 import { Button } from '@/shared/ui';
 
 type ImageUploadProps = {
@@ -14,9 +15,30 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isUploaded, setIsUploaded] = useState(false);
+
+  const uploadImagesMutation = useMutationRequest<void, File[]>(
+    (selectedFiles) => contentApi.uploadImages(selectedFiles),
+    {
+      onSuccess: () => {
+        setFiles([]);
+        setIsUploaded(true);
+        onUploaded?.();
+
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      },
+      onError: (err) => {
+        setError(
+          err instanceof Error ? err.message : t('gallery.imageUpload.failed'),
+        );
+      },
+    },
+  );
+
+  const isUploading = uploadImagesMutation.isPending;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files ?? []);
@@ -36,32 +58,16 @@ export function ImageUpload({ onUploaded }: ImageUploadProps) {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (files.length === 0) {
       setError(t('gallery.imageUpload.emptyError'));
       return;
     }
 
-    setIsUploading(true);
     setError(null);
     setIsUploaded(false);
 
-    try {
-      await contentApi.uploadImages(files);
-      setFiles([]);
-      setIsUploaded(true);
-      onUploaded?.();
-
-      if (inputRef.current) {
-        inputRef.current.value = '';
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : t('gallery.imageUpload.failed'),
-      );
-    } finally {
-      setIsUploading(false);
-    }
+    uploadImagesMutation.mutate(files);
   };
 
   return (
